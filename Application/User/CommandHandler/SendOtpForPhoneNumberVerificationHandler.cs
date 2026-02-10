@@ -1,13 +1,15 @@
 using MediatR;
 using poketra_vyrt_api.Application.User.Command;
+using poketra_vyrt_api.Domain.Port;
 
 namespace poketra_vyrt_api.Application.User.CommandHandler;
 
-public class SendOtpForPhoneNumberVerificationHandler(ILogger<SendOtpForPhoneNumberVerificationHandler> logger): 
+public class SendOtpForPhoneNumberVerificationHandler(IOtpService otpService): 
     IRequestHandler<SendOtpForPhoneNumberVerificationCommand>
 {
     public async Task Handle(SendOtpForPhoneNumberVerificationCommand cmd, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Send Otp To: {}", cmd.PhoneNumber);
+        var otpKey = $"Otp:AccountVerification:{cmd.PhoneNumber}";
+        await otpService.GenerateAndStore(otpKey);
     }
 }

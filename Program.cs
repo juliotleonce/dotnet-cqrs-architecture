@@ -21,6 +21,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
+builder.Services.AddRedisCaching(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddSecurityServices();
 

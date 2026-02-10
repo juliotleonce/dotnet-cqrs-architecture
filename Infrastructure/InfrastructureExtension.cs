@@ -7,16 +7,15 @@ namespace poketra_vyrt_api.Infrastructure;
 
 public static class InfrastructureExtension
 {
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
-        return services;
     }
 
-    public static IServiceCollection AddSecurityServices(this IServiceCollection services)
+    public static void AddSecurityServices(this IServiceCollection services)
     {
         services.AddScoped<ICryptographyService, CryptographyService>();
-        return services;
+        services.AddScoped<IOtpService, OtpService>();
     }
 }
