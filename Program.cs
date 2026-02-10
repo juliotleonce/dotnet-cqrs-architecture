@@ -22,6 +22,7 @@ builder.Services.AddMediatR(cfg =>
 });
 
 builder.Services.AddRepositories();
+builder.Services.AddSecurityServices();
 
 var app = builder.Build();
 
