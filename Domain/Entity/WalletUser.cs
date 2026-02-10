@@ -33,6 +33,7 @@ public class WalletUser: AggregatRoot
             Password = password
         };
         user.ThrowIfNotValid();
+        user.AddDomainEvent(UserCreatedEvent.FromUserEntity(user));
         return user;
     }
     

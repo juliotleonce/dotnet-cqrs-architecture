@@ -6,16 +6,15 @@ using poketra_vyrt_api.Domain.Port;
 
 namespace poketra_vyrt_api.Application.User.CommandHandler;
 
-public class SignUpHandler(IUserRepository userRepository, IMediator mediator, ICryptographyService cryptographyService): 
+public class SignUpHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, ICryptographyService cryptographyService): 
     IRequestHandler<SignUpCommand, Guid>
 {
     public async Task<Guid> Handle(SignUpCommand cmd, CancellationToken cancellationToken)
     {
         await TrowIfPhoneNumberAlreadyUsed(cmd.PhoneNumber);
         var newUser = CreateWalletUser(cmd);
-        var savedUser = await userRepository.AddNewUser(newUser, cancellationToken);
-        savedUser.RequestVerification();
-        savedUser.ConsumeDomainEvents(e => mediator.Publish(e, cancellationToken));
+        var savedUser = userRepository.Add(newUser);
+        await unitOfWork.CommitAsync(cancellationToken);
         return savedUser.Id;
     }
 
