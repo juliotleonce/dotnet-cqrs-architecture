@@ -1,21 +1,45 @@
+using Microsoft.EntityFrameworkCore;
+using poketra_vyrt_api;
+using poketra_vyrt_api.Infrastructure;
+using poketra_vyrt_api.Infrastructure.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.AddSwaggerSetup();
+builder.Services.AddGlobalExceptionHanler();
+
+builder.Services.AddDbContext<AppDatabaseContext>(option =>
+{
+    option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddMediatR(cfg => 
+{
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
+
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Poketra Vyrt API v1");
+        options.RoutePrefix = "swagger";
+    });
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+app.UseExceptionHandler();
 
 app.Run();
