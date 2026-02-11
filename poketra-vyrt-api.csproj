@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="DotNetEnv" Version="3.1.1" />
         <PackageReference Include="MediatR" Version="14.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
@@ -23,6 +24,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.2" />
+        <PackageReference Include="Vonage" Version="8.23.0" />
     </ItemGroup>
 
 </Project>

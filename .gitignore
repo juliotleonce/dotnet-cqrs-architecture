@@ -5,3 +5,4 @@ riderModule.iml
 /_ReSharper.Caches/
 /.idea/.idea.poketra-vyrt-api/.idea/data_source_mapping.xml
 /.idea/.idea.poketra-vyrt-api/.idea/db-forest-config.xml
+.env
