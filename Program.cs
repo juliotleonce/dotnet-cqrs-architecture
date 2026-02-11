@@ -27,7 +27,7 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddRedisCaching(builder.Configuration);
 builder.Services.AddRepositories();
-builder.Services.AddSecurityServices();
+builder.Services.AddSecurityServices(builder.Configuration);
 builder.Services.AddExternalServices(builder.Configuration);
 
 var app = builder.Build();

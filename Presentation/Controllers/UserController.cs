@@ -22,9 +22,10 @@ public class UserController(IMediator mediator): ControllerBase
         return Ok();
     }
 
-    [HttpPost("validate-account/{userId}")]
-    public IActionResult ValidateAccount(Guid userId)
+    [HttpPost("validate-account/")]
+    public async Task<IActionResult> ValidateAccount(PhoneNumberVerificationAttemptCommand cmd)
     {
-        return Ok();
+        var result = await mediator.Send(cmd);
+        return Ok(result);
     }
 }

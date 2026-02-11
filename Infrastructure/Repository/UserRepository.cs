@@ -18,4 +18,9 @@ public class UserRepository(AppDatabaseContext dbContext): IUserRepository
         dbContext.Users.Add(user);
         return user;
     }
+
+    public async Task<WalletUser?> FindByPhoneNumber(string phoneNumber)
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+    }
 }

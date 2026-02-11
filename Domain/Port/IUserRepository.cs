@@ -5,5 +5,6 @@ namespace poketra_vyrt_api.Domain.Port;
 public interface IUserRepository
 {
     Task<bool> CheckIfPhoneNumberAlreadyExist(string phoneNumber);
+    Task<WalletUser?> FindByPhoneNumber(string phoneNumber);
     WalletUser Add(WalletUser user);
 }

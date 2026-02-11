@@ -10,6 +10,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IEx
     {
         var (status, title) = ex switch 
         {
+            EntityNotFoundException => (StatusCodes.Status404NotFound, nameof(EntityNotFoundException)),
             AccountNotVerifiedException => (StatusCodes.Status403Forbidden, nameof(AccountNotVerifiedException)),
             DomainException => (StatusCodes.Status400BadRequest, nameof(DomainException)),
             AlreadyExistsException => (StatusCodes.Status409Conflict, nameof(AlreadyExistsException)),

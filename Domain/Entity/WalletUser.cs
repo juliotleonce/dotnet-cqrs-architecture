@@ -37,9 +37,13 @@ public class WalletUser: AggregatRoot
         return user;
     }
     
-    public void Activate() => Status = AccountStatus.Active;
-    
-    public bool IsVerified() => Status == AccountStatus.Active;
+    public void Activate()
+    {
+        Status = AccountStatus.Active;
+        AddDomainEvent(new UserAccountVerifiedEvent{ UserId = Id });
+    }
+
+    public bool IsNotVerified() => Status == AccountStatus.NotVerified;
     
     public bool IsBlocked() => Status == AccountStatus.Blocked;
 
