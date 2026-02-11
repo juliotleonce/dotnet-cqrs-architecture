@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using poketra_vyrt_api;
 using poketra_vyrt_api.Infrastructure;
 using poketra_vyrt_api.Infrastructure.Database;
+using DotNetEnv;
+
+if(File.Exists(".env"))
+    Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +25,10 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
+builder.Services.AddRedisCaching(builder.Configuration);
 builder.Services.AddRepositories();
+builder.Services.AddSecurityServices(builder.Configuration);
+builder.Services.AddExternalServices(builder.Configuration);
 
 var app = builder.Build();
 

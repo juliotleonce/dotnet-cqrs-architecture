@@ -5,24 +5,22 @@ using poketra_vyrt_api.Infrastructure.Database;
 
 namespace poketra_vyrt_api.Infrastructure.Repository;
 
-public class UserRepository: IUserRepository
+public class UserRepository(AppDatabaseContext dbContext): IUserRepository
 {
-    private readonly AppDatabaseContext _dbContext;
-    public UserRepository(AppDatabaseContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<bool> CheckIfPhoneNumberAlreadyExist(string phoneNumber)
     {
-        var countOfUsersWithPhone = await _dbContext.Users.CountAsync(u => u.PhoneNumber == phoneNumber);
+        var countOfUsersWithPhone = await dbContext.Users.CountAsync(u => u.PhoneNumber == phoneNumber);
         return countOfUsersWithPhone > 0;  
     }
     
-    public async Task<WalletUser> AddNewUser(WalletUser user, CancellationToken cancellationToken = default)
+    public WalletUser Add(WalletUser user)
     {
-        _dbContext.Users.Add(user);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Users.Add(user);
         return user;
+    }
+
+    public async Task<WalletUser?> FindByPhoneNumber(string phoneNumber)
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
     }
 }

@@ -33,12 +33,17 @@ public class WalletUser: AggregatRoot
             Password = password
         };
         user.ThrowIfNotValid();
+        user.AddDomainEvent(UserCreatedEvent.FromUserEntity(user));
         return user;
     }
     
-    public void Activate() => Status = AccountStatus.Active;
-    
-    public bool IsVerified() => Status == AccountStatus.Active;
+    public void Activate()
+    {
+        Status = AccountStatus.Active;
+        AddDomainEvent(new UserAccountVerifiedEvent{ UserId = Id });
+    }
+
+    public bool IsNotVerified() => Status == AccountStatus.NotVerified;
     
     public bool IsBlocked() => Status == AccountStatus.Blocked;
 

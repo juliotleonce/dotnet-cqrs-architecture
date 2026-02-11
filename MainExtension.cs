@@ -6,13 +6,12 @@ namespace poketra_vyrt_api;
 public static class MainExtension
 {
 
-    public static IServiceCollection AddGlobalExceptionHanler(this IServiceCollection services)
+    public static void AddGlobalExceptionHanler(this IServiceCollection services)
     {
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-        return services;
     }
-    public static IServiceCollection AddSwaggerSetup(this IServiceCollection services)
+    public static void AddSwaggerSetup(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -32,6 +31,14 @@ public static class MainExtension
                 [new OpenApiSecuritySchemeReference("bearer", document)] = []
             });
         });
-        return services;
+    }
+
+    public static void AddRedisCaching(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration["Redis:ConnectionString"];
+            options.InstanceName = configuration["Redis:InstanceName"];
+        });
     }
 }

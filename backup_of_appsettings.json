@@ -8,5 +8,13 @@
   "AllowedHosts": "*",
   "ConnectionStrings": {
     "DefaultConnection": "Host=localhost;Database=poketra_vyrt;Username=ajl420;Password=comme"
+  },
+  "Redis": {
+    "ConnectionString": "localhost:6379",
+    "InstanceName": "PoketraVyrt:Dev:"
+  },
+  "Vonage": {
+    "ApiKey": "676f0c3b",
+    "ApiSecret": "7kkTt1UrVDnkEp78"
   }
 }

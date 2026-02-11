@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using poketra_vyrt_api.Application.User.Command;
 
@@ -15,10 +14,18 @@ public class UserController(IMediator mediator): ControllerBase
         var userId = await mediator.Send(cmd);
         return CreatedAtAction(nameof(ValidateAccount), new { userId }, userId);
     }
-
-    [HttpPost("validate-account/{userId}")]
-    public IActionResult ValidateAccount(Guid userId)
+    
+    [HttpPost("resend-otp")]
+    public async Task<IActionResult> ResendOtp(SendOtpForPhoneNumberVerificationCommand cmd)
     {
+        await mediator.Send(cmd);
         return Ok();
+    }
+
+    [HttpPost("validate-account/")]
+    public async Task<IActionResult> ValidateAccount(PhoneNumberVerificationAttemptCommand cmd)
+    {
+        var result = await mediator.Send(cmd);
+        return Ok(result);
     }
 }
