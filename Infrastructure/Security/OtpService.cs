@@ -12,11 +12,16 @@ public class OtpService(IDistributedCache cache): IOtpService
         return otpValueCache == otpValueAttempt;
     }
 
-    public async Task GenerateAndStore(string otpKey)
+    public async Task StoreOtpInCache(string otpKey, string otpValue)
     {
-        int randomizedOtp = Random.Shared.Next(10000, 99999);
         var options = new DistributedCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
-        await cache.SetStringAsync(otpKey, randomizedOtp.ToString(), options);
+        await cache.SetStringAsync(otpKey, otpValue, options);
+    }
+    
+    public string Generate(int length = 6)
+    {
+        var randomizedOtp = Random.Shared.Next(1, (int) (Math.Pow(10, length))-1);
+        return randomizedOtp.ToString().PadLeft(length, '0');
     }
 }

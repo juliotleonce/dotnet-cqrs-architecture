@@ -10,6 +10,7 @@ public class SendOtpForPhoneNumberVerificationHandler(IOtpService otpService):
     public async Task Handle(SendOtpForPhoneNumberVerificationCommand cmd, CancellationToken cancellationToken)
     {
         var otpKey = $"Otp:AccountVerification:{cmd.PhoneNumber}";
-        await otpService.GenerateAndStore(otpKey);
+        var otpValue = otpService.Generate();
+        await otpService.StoreOtpInCache(otpKey, otpValue);
     }
 }
