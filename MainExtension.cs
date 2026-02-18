@@ -1,16 +1,9 @@
 using Microsoft.OpenApi;
-using poketra_vyrt_api.Presentation.ExceptionHandler;
 
 namespace poketra_vyrt_api;
 
 public static class MainExtension
 {
-
-    public static void AddGlobalExceptionHanler(this IServiceCollection services)
-    {
-        services.AddExceptionHandler<GlobalExceptionHandler>();
-        services.AddProblemDetails();
-    }
     public static void AddSwaggerSetup(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();

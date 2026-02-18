@@ -21,7 +21,7 @@ public class PhoneNumberVerificationAttemptHandler
         await ThrowIfIncorrectOtp(cmd);
         user.Activate();
         await unitOfWork.CommitAsync(cancellationToken);
-        var accessToken = cryptographyService.GeneraAccessToken(user.Id);
+        var accessToken = cryptographyService.GeneraAccessToken(user);
         return new { AccecToken = accessToken };
     }
     
