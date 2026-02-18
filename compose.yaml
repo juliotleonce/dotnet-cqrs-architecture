@@ -1,7 +1,37 @@
-﻿services:
+﻿version: '3.8'
+
+services:
   poketra-vyrt-api:
-    image: poketra-vyrt-api
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - principal_database
+      - caching_service
+    networks:
+      - shared_network
+    ports:
+      - "8080:8080"  # Assuming the app runs on 8080, adjust if needed
+
+  principal_database:
+    image: postgres:15
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - shared_network
+
+  caching_service:
+    image: redis:7
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+
+volumes:
+  postgres_data:
 
