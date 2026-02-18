@@ -1,11 +1,13 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using poketra_vyrt_api.Domain.Port;
 using poketra_vyrt_api.Infrastructure.Database;
 using poketra_vyrt_api.Infrastructure.ExternalService;
 using poketra_vyrt_api.Infrastructure.Repository;
 using poketra_vyrt_api.Infrastructure.Security;
+using poketra_vyrt_api.Infrastructure.Security.Policy;
 
 namespace poketra_vyrt_api.Infrastructure;
 
@@ -19,6 +21,8 @@ public static class InfrastructureExtension
 
     public static void AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpContextAccessor();
+        services.AddSingleton<IAuthorizationHandler, ActivatedAccountRequirementHandler>();
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(option =>
@@ -37,6 +41,16 @@ public static class InfrastructureExtension
                     ClockSkew = TimeSpan.Zero
                 };
             });
+        
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("MustBeActiveAccount", policy =>
+            {
+                policy.Requirements.Add(new ActivatedAccountRequirement());
+            });
+            options.FallbackPolicy = options.GetPolicy("MustBeActiveAccount");
+        });
+        
         services.AddScoped<ICryptographyService, CryptographyService>();
         services.AddScoped<IOtpService, OtpService>();
     }

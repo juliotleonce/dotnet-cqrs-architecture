@@ -6,16 +6,22 @@ using poketra_vyrt_api.Domain.Port;
 
 namespace poketra_vyrt_api.Application.User.CommandHandler;
 
-public class SignUpHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, ICryptographyService cryptographyService): 
-    IRequestHandler<SignUpCommand, Guid>
+public class SignUpHandler
+(
+    IUserRepository userRepository, 
+    IUnitOfWork unitOfWork, 
+    ICryptographyService cryptographyService
+): 
+    IRequestHandler<SignUpCommand, object>
 {
-    public async Task<Guid> Handle(SignUpCommand cmd, CancellationToken cancellationToken)
+    public async Task<object> Handle(SignUpCommand cmd, CancellationToken cancellationToken)
     {
         await TrowIfPhoneNumberAlreadyUsed(cmd.PhoneNumber);
         var newUser = CreateWalletUser(cmd);
         var savedUser = userRepository.Add(newUser);
         await unitOfWork.CommitAsync(cancellationToken);
-        return savedUser.Id;
+        var accesToken = cryptographyService.GeneraAccessToken(savedUser);
+        return new { AccecToken = accesToken };
     }
 
     private async Task TrowIfPhoneNumberAlreadyUsed(string phoneNumber)

@@ -3,6 +3,8 @@ using poketra_vyrt_api;
 using poketra_vyrt_api.Infrastructure;
 using poketra_vyrt_api.Infrastructure.Database;
 using DotNetEnv;
+using Microsoft.AspNetCore.Diagnostics;
+using poketra_vyrt_api.Presentation.Middleware;
 
 if(File.Exists(".env"))
     Env.Load();
@@ -13,7 +15,6 @@ builder.Services.AddControllers();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddSwaggerSetup();
-builder.Services.AddGlobalExceptionHanler();
 
 builder.Services.AddDbContext<AppDatabaseContext>(option =>
 {
@@ -32,7 +33,6 @@ builder.Services.AddExternalServices(builder.Configuration);
 
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -44,9 +44,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseExceptionHandler();
 
 app.Run();
