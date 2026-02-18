@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="poketra_vyrt@localhost" uuid="176dd8fd-6d3e-4b0e-954a-bb07d1596047">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost/poketra_vyrt?password=comme&amp;user=ajl420</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="@localhost" uuid="99be54b5-25bf-4fc3-b0ab-5de6e1ae608e">
       <driver-ref>redis</driver-ref>
       <synchronize>true</synchronize>
@@ -25,6 +17,18 @@
         <property name="verifyConnectionMode" value="false" />
         <property name="verifyServerCertificate" value="false" />
       </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="poketra_vyrt@localhost" uuid="6f601707-71c9-48b2-9dfb-8bba97a08e4c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/poketra_vyrt</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
 </project>
