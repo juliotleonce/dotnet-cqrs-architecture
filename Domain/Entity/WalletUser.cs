@@ -50,9 +50,9 @@ public class WalletUser: AggregatRoot
     private void ThrowIfNotValid()
     {
         if(PhoneNumber == string.Empty || Password == string.Empty || FullName == string.Empty)
-            throw new DomainException("Aucune Champs ne doit etre vide");
+            throw new DomainRuleException("Aucune Champs ne doit etre vide");
         if (!PhoneFormatValidator.IsMatch(PhoneNumber))
-            throw new DomainException("Format du numero de telephone invalide a Madagascar(+261 3X XX XXX XX)");
+            throw new DomainRuleException("Format du numero de telephone invalide a Madagascar(+261 3X XX XXX XX)");
     }
     
     public void RequestVerification()
