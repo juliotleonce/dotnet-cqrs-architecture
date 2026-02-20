@@ -20,6 +20,7 @@ public class SignUpHandler
         var newUser = CreateWalletUser(cmd);
         var savedUser = userRepository.Add(newUser);
         await unitOfWork.CommitAsync(cancellationToken);
+        unitOfWork.DispatchDomainEvents();
         var accesToken = cryptographyService.GeneraAccessToken(savedUser);
         return new { AccecToken = accesToken };
     }

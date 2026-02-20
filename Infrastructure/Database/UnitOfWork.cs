@@ -10,11 +10,10 @@ public class UnitOfWork(AppDatabaseContext dbContext, IMediator mediator):
     public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
     {
         var commited = await dbContext.SaveChangesAsync(cancellationToken) > 0;
-        DispatchAllEvents();
         return commited;
     }
     
-    private void DispatchAllEvents()
+    public void DispatchDomainEvents()
     {
         dbContext.ChangeTracker
             .Entries<AggregatRoot>()
