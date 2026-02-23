@@ -7,14 +7,14 @@ public enum WalletTransactionStatus
 
 public class WalletTransaction
 {
-    Guid Id { get; init; } = Guid.NewGuid();
-    Guid CreditorWalletId { get; init; }
-    Guid DebitorWalletId { get; init; }
-    decimal Amount { get; init; }
-    WalletTransactionStatus Status { get; init; } = WalletTransactionStatus.Pending;
-    DateTime CreatedAt { get; init; } = DateTime.UtcNow;
-    DateTime? CompletedAt { get; set; }
-    private HashSet<LedgerEntry> LedgerEntries { get; init; } = [];
+    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid CreditorWalletId { get; init; }
+    public Guid DebitorWalletId { get; init; }
+    public decimal Amount { get; init; }
+    public WalletTransactionStatus Status { get; init; } = WalletTransactionStatus.Pending;
+    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+    public DateTime? CompletedAt { get; set; }
+    public HashSet<LedgerEntry> LedgerEntries { get; init; } = [];
 
     public static WalletTransaction CreateAndInit(Wallet creditorWallet, Wallet debitorWallet, decimal amount)
     {
