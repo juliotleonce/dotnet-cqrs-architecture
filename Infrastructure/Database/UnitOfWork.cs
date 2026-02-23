@@ -12,6 +12,13 @@ public class UnitOfWork(AppDatabaseContext dbContext, IMediator mediator):
         var commited = await dbContext.SaveChangesAsync(cancellationToken) > 0;
         return commited;
     }
+
+    public async Task<bool> CommitAndDispatchEventsAsync(CancellationToken cancellationToken = default)
+    {
+        var commited = await CommitAsync(cancellationToken);
+        DispatchDomainEvents();
+        return commited;
+    }
     
     public void DispatchDomainEvents()
     {
