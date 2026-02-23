@@ -22,6 +22,89 @@ namespace poketra_vyrt_api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.LedgerEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LedgerEntryType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("WalletTransactionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletTransactionId");
+
+                    b.ToTable("LedgerEntries");
+                });
+
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wallets");
+
+                    b.HasDiscriminator<string>("Type").HasValue("Wallet");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.WalletTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreditorWalletId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DebitorWalletId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WalletTransactions");
+                });
+
             modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.WalletUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -52,6 +135,43 @@ namespace poketra_vyrt_api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.PersonalWallet", b =>
+                {
+                    b.HasBaseType("poketra_vyrt_api.Domain.Entity.Wallet");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.HasDiscriminator().HasValue("Personal");
+                });
+
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.ProviderWallet", b =>
+                {
+                    b.HasBaseType("poketra_vyrt_api.Domain.Entity.Wallet");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderTagId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasDiscriminator().HasValue("Provider");
+                });
+
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.LedgerEntry", b =>
+                {
+                    b.HasOne("poketra_vyrt_api.Domain.Entity.WalletTransaction", null)
+                        .WithMany("LedgerEntries")
+                        .HasForeignKey("WalletTransactionId");
+                });
+
+            modelBuilder.Entity("poketra_vyrt_api.Domain.Entity.WalletTransaction", b =>
+                {
+                    b.Navigation("LedgerEntries");
                 });
 #pragma warning restore 612, 618
         }
