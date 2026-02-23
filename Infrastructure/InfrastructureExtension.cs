@@ -17,6 +17,7 @@ public static class InfrastructureExtension
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IWalletRepository, WalletRepository>();
     }
 
     public static void AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
