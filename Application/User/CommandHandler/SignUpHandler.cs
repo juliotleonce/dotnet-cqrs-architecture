@@ -19,8 +19,7 @@ public class SignUpHandler
         await TrowIfPhoneNumberAlreadyUsed(cmd.PhoneNumber);
         var newUser = CreateWalletUser(cmd);
         var savedUser = userRepository.Add(newUser);
-        await unitOfWork.CommitAsync(cancellationToken);
-        unitOfWork.DispatchDomainEvents();
+        await unitOfWork.CommitAndDispatchEventsAsync(cancellationToken);
         var accesToken = cryptographyService.GeneraAccessToken(savedUser);
         return new { AccecToken = accesToken };
     }
