@@ -58,14 +58,17 @@ public static class InfrastructureExtension
 
     public static void AddExternalServices(this IServiceCollection services, IConfiguration configuration)
     {
-        Console.WriteLine(configuration["SmsService:ProviderName"]);
-        if (configuration["SmsService:ProviderName"] == "Orange")
+        switch (configuration["SmsService:ProviderName"])
         {
-            services.AddHttpClient<ISmsService, OrangeSmsService>();
-        }
-        else
-        {
-            services.AddScoped<ISmsService, VonageSmsService>();
+            case "Orange":
+                services.AddHttpClient<ISmsService, OrangeSmsService>();
+                break;
+            case "Vonage":
+                services.AddScoped<ISmsService, VonageSmsService>();
+                break;
+            default:
+                services.AddScoped<ISmsService, MockSmsService>();
+                break;
         }
     }
 }
