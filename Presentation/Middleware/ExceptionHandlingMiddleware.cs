@@ -25,7 +25,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
             EntityNotFoundException     => (StatusCodes.Status404NotFound, nameof(EntityNotFoundException)),
             AccountNotVerifiedException => (StatusCodes.Status403Forbidden, nameof(AccountNotVerifiedException)),
             AccountBlockedException     => (StatusCodes.Status403Forbidden, nameof(AccountBlockedException)),
-            DomainException             => (StatusCodes.Status400BadRequest, nameof(DomainException)),
+            DomainRuleException         => (StatusCodes.Status422UnprocessableEntity, nameof(DomainRuleException)),
             AlreadyExistsException      => (StatusCodes.Status409Conflict, nameof(AlreadyExistsException)),
             _                           => (StatusCodes.Status500InternalServerError, "ServerError")
         };

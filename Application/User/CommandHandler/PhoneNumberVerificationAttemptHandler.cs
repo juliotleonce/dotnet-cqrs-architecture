@@ -20,7 +20,7 @@ public class PhoneNumberVerificationAttemptHandler
         if (user == null) throw new EntityNotFoundException("Aucun utilisateur n'a ce numero de telephone");
         await ThrowIfIncorrectOtp(cmd);
         user.Activate();
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAndDispatchEventsAsync(cancellationToken);
         var accessToken = cryptographyService.GeneraAccessToken(user);
         return new { AccecToken = accessToken };
     }
@@ -29,6 +29,6 @@ public class PhoneNumberVerificationAttemptHandler
     {
         var otpKey = $"Otp:AccountVerification:{cmd.PhoneNumber}";
         var isOtpCorrect = await otpService.VerifyOtpFromStore(otpKey, cmd.Otp);
-        if (!isOtpCorrect) throw new DomainException("Code de verification incorrect");
+        if (!isOtpCorrect) throw new DomainRuleException("Code de verification incorrect");
     }
 }
