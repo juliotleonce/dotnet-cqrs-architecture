@@ -1,4 +1,4 @@
-# Poketra Vyrt API
+# .Net CQRS Architecture
 
 ## 🧪 Architecture Experimentation Project
 
