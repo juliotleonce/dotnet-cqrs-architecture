@@ -6,3 +6,4 @@ riderModule.iml
 /.idea/.idea.poketra-vyrt-api/.idea/data_source_mapping.xml
 /.idea/.idea.poketra-vyrt-api/.idea/db-forest-config.xml
 .env
+.example.env
