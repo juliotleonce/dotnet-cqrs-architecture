@@ -4,5 +4,7 @@ namespace poketra_vyrt_api.Domain.Port;
 
 public interface IWalletRepository
 {
-    PersonalWallet AddPersonalWallet(PersonalWallet wallet);
+    void AddPersonalWallet(PersonalWallet wallet);
+    Task<PersonalWallet?> GetPersonalWalletByOwnerId(Guid ownerId);
+    Task<ProviderWallet?> GetProviderWalletByProviderReference(string providerReference);
 }

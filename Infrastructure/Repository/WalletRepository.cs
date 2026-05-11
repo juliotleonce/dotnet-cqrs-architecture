@@ -6,9 +6,18 @@ namespace poketra_vyrt_api.Infrastructure.Repository;
 
 public class WalletRepository(AppDatabaseContext dbContext): IWalletRepository
 {
-    public PersonalWallet AddPersonalWallet(PersonalWallet wallet)
+    public void AddPersonalWallet(PersonalWallet wallet)
     {
-        dbContext.Add(wallet);
-        return wallet;
+        dbContext.Wallets.Add(wallet);
+    }
+
+    public async Task<PersonalWallet?> GetPersonalWalletByOwnerId(Guid ownerId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ProviderWallet?> GetProviderWalletByProviderReference(string providerReference)
+    {
+        throw new NotImplementedException();
     }
 }
